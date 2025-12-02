@@ -1,0 +1,6 @@
+@sghss_uninter_HostAddress = http://localhost:5016
+
+GET {{sghss_uninter_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
