@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sghss_uninter;
 using sghss_uninter.Data;
 using sghss_uninter.DTOs;
 using sghss_uninter.Models;
@@ -30,23 +31,33 @@ if (app.Environment.IsDevelopment())
 
 #region Endpoints Paciente
 
-app.MapPost("/pacientes", (AppDbContext db, [FromBody] Paciente novoPaciente) =>
+app.MapPost("/pacientes", (AppDbContext db, [FromBody] PacienteDTO novoPaciente) =>
     {
         if (novoPaciente is null) {
             return Results.BadRequest("Dados do paciente invalidos");
         }
 
-        novoPaciente.Prontuario = new Prontuario();
-        db.Pacientes.Add(novoPaciente);
+        var paciente = new Paciente
+        {
+            Nome = novoPaciente.Nome,
+            Email = novoPaciente.Email,
+            Telefone = novoPaciente.Telefone,
+            DataNasc = novoPaciente.DataNasc,
+            Cpf = novoPaciente.Cpf
+        };
+        db.Pacientes.Add(paciente);
         db.SaveChanges();
-        return Results.Created($"/pacientes/{novoPaciente.Id}", novoPaciente);
+        var response = new Response<Paciente>(paciente, "paciente criado com sucesso!", 201);
+        return Results.Created($"/pacientes/{paciente.Id}", response);
     })
     .WithOpenApi()
     .WithName("CriarPaciente");
 
 app.MapGet("/pacientes", (AppDbContext db) =>
     {
-        var pacientes = db.Pacientes.ToList();
+        var pacientes = db.Pacientes
+            .Include(p => p.Prontuario)
+            .ToList();
         return Results.Ok(pacientes);
     })
     .WithOpenApi()
@@ -88,7 +99,10 @@ app.MapPut("/pacientes/{id:int}", async (int id, AppDbContext db, [FromBody] Pac
 
 app.MapGet("/pacientes/{id:int}", async (AppDbContext db, int id) =>
     {
-        var paciente = await db.Pacientes.FindAsync(id);
+        var paciente = await db.Pacientes
+            .Include(p => p.Prontuario)
+            .Where(p  => p.Id == id)
+            .FirstOrDefaultAsync();
         return paciente is null ? Results.NotFound() : Results.Ok(paciente);
     })
     .WithOpenApi()
