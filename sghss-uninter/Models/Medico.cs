@@ -8,5 +8,6 @@ public class Medico
     public string Telefone { get; set; }
     public string Cpf { get; init; }
     public int Crm { get; init; }
+    public string ApplicationUserId { get; init; }
     public ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
 }
