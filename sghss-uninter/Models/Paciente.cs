@@ -21,5 +21,5 @@ public class Paciente
     }
     public string Email  { get; set; }
     public string Telefone  { get; set; }
-    public Prontuario Prontuario { get; set; } = new();
+    public Prontuario Prontuario { get; set; }
 }

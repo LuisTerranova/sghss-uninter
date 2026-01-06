@@ -19,6 +19,8 @@ public class ConsultaMap : IEntityTypeConfiguration<Consulta>
             .IsRequired();
         builder.Property(c => c.Status)
             .IsRequired();
+        builder.Property(c => c.Anamnese)
+            .IsRequired();
         
         builder.Property(x => x.MedicoId);
         builder.HasOne(c => c.Medico)

@@ -11,7 +11,7 @@ using sghss_uninter.Data;
 namespace sghss_uninter.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251211184826_InitialTables")]
+    [Migration("20260106183814_InitialTables")]
     partial class InitialTables
     {
         /// <inheritdoc />
@@ -153,6 +153,10 @@ namespace sghss_uninter.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Anamnese")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("TEXT");

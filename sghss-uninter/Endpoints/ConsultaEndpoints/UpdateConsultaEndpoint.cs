@@ -21,7 +21,6 @@ public class UpdateConsultaEndpoint : IEndpoint
         
         var consulta = await context.Consultas.FirstOrDefaultAsync(c => c.Id == id);
         consulta.DataHora = consultaDto.DataHora;
-        consulta.MedicoId = consultaDto.MedicoId;
 
         context.Consultas.Update(consulta);
         await context.SaveChangesAsync();

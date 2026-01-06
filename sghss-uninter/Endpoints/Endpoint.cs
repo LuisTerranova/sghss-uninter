@@ -1,6 +1,7 @@
 using sghss_uninter.Api;
 using sghss_uninter.Endpoints.ConsultaEndpoints;
 using sghss_uninter.Endpoints.MedicoEndpoints;
+using sghss_uninter.Endpoints.PacienteEndpoints;
 using sghss_uninter.Endpoints.UsuarioEdpoints;
 
 namespace sghss_uninter.Endpoints;
@@ -20,7 +21,11 @@ public static class Endpoint
 
         endpoints.MapGroup("/v1/consultas")
             .MapEndpoint<CreateConsultaEndpoint>()
-            .MapEndpoint<UpdateConsultaEndpoint>();
+            .MapEndpoint<UpdateConsultaEndpoint>()
+            .MapEndpoint<DeleteConsultaEndpoint>();
+        
+        endpoints.MapGroup("/v1/pacientes")
+            .MapEndpoint<CreatePacienteEndpoint>();
 
 
     }

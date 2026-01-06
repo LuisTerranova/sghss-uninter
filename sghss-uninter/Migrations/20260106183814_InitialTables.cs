@@ -219,6 +219,7 @@ namespace sghss_uninter.Migrations
                     DataHora = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Status = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Anamnese = table.Column<string>(type: "TEXT", nullable: false),
                     MedicoId = table.Column<int>(type: "INTEGER", nullable: false),
                     PacienteId = table.Column<int>(type: "INTEGER", nullable: false),
                     ProntuarioId = table.Column<int>(type: "INTEGER", nullable: false)
