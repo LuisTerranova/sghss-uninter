@@ -197,7 +197,8 @@ namespace sghss_uninter.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    PacienteId = table.Column<int>(type: "INTEGER", nullable: false)
+                    PacienteId = table.Column<int>(type: "INTEGER", nullable: false),
+                    AnamneseGeral = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

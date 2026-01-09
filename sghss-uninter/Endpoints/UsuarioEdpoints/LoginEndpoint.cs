@@ -1,5 +1,8 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using sghss_uninter.Api;
+using sghss_uninter.Data;
 using sghss_uninter.Models.Identity;
 
 namespace sghss_uninter.Endpoints.UsuarioEdpoints;
@@ -13,18 +16,30 @@ public class LoginEndpoint : IEndpoint
 
     private record LoginRequest(string Email, string Password);
     
-    private static async Task<IResult> HandleAsync(SignInManager<ApplicationUser>  signInManager
-    , LoginRequest loginRequest)
+    private static async Task<IResult> HandleAsync(
+        SignInManager<ApplicationUser> signInManager, 
+        UserManager<ApplicationUser> userManager,
+        AppDbContext context, 
+        LoginRequest loginRequest)
     {
-        var result = await signInManager.PasswordSignInAsync(
-            loginRequest.Email, 
-            loginRequest.Password, 
-            isPersistent: false, 
-            lockoutOnFailure: false 
-        );
+        var user = await userManager.FindByEmailAsync(loginRequest.Email);
+        if (user == null) return Results.Unauthorized();
         
-        return result.Succeeded 
-            ? Results.Ok(new { message = "Login realizado com sucesso." }) 
-            : Results.Unauthorized();
+        var result = await signInManager.CheckPasswordSignInAsync(user, loginRequest.Password, false);
+
+        if (!result.Succeeded) return Results.Unauthorized();
+        
+        var customClaims = new List<Claim>();
+        var medico = await context.Medicos
+            .FirstOrDefaultAsync(m => m.ApplicationUserId == user.Id);
+        
+        if (medico != null)
+            customClaims.Add(new Claim("medicoid", medico.Id.ToString()));
+        
+            
+        await signInManager.SignInWithClaimsAsync(user, isPersistent: false, customClaims);
+
+        return Results.Ok(new { message = "Login realizado com sucesso." });
+
     }
 }

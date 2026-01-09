@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace sghss_uninter.Models;
 
 public class Paciente
@@ -21,5 +23,6 @@ public class Paciente
     }
     public string Email  { get; set; }
     public string Telefone  { get; set; }
+    [JsonIgnore]
     public Prontuario Prontuario { get; set; }
 }

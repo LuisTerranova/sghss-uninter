@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace sghss_uninter.Models;
 
 public class Consulta
@@ -10,7 +12,10 @@ public class Consulta
     public int MedicoId { get; set; }
     public int PacienteId { get; set; }
     public int ProntuarioId { get; set; }
+    [JsonIgnore]
     public Medico Medico { get; set; }
+    [JsonIgnore]
     public Paciente Paciente { get; set; }
+    [JsonIgnore]
     public Prontuario Prontuario { get; set; }
 }

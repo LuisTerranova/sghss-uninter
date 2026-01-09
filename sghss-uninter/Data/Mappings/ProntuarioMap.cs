@@ -13,6 +13,8 @@ public class ProntuarioMap : IEntityTypeConfiguration<Prontuario>
 
         builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
+        builder.Property(p => p.AnamneseGeral);
+
         builder.HasMany(p => p.Consultas)
             .WithOne(c => c.Prontuario)
             .HasForeignKey(c => c.ProntuarioId)

@@ -327,6 +327,10 @@ namespace sghss_uninter.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AnamneseGeral")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("PacienteId")
                         .HasColumnType("INTEGER");
 

@@ -17,6 +17,13 @@ public class CreateConsultaEndpoint : IEndpoint
         , ClaimsPrincipal user
         , AppDbContext context)
     {
+        var medicoIdClaim = user.FindFirst("medicoid")?.Value;
+        
+        if (string.IsNullOrEmpty(medicoIdClaim))
+            return Results.Forbid(); 
+
+        var medicoId = int.Parse(medicoIdClaim);
+        
         var pacienteExiste = await context.Pacientes
             .AsNoTracking()
             .FirstOrDefaultAsync(p => p.Id == consultaDto.PacienteId);
@@ -37,17 +44,10 @@ public class CreateConsultaEndpoint : IEndpoint
             await context.SaveChangesAsync();
         }
 
-        var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var medico = await context.Medicos
-            .AsNoTracking()
-            .FirstOrDefaultAsync(m => m.ApplicationUserId == userIdClaim);
-
-        if (medico == null) return Results.BadRequest("Perfil de médico não localizado.");
-
         var consulta = new Consulta
         {
             DataHora = consultaDto.DataHora,
-            MedicoId = medico.Id,
+            MedicoId = medicoId,
             PacienteId = consultaDto.PacienteId,
             ProntuarioId = prontuario.Id,
             Anamnese = consultaDto.Anamnese
@@ -56,14 +56,6 @@ public class CreateConsultaEndpoint : IEndpoint
         await context.Consultas.AddAsync(consulta);
         await context.SaveChangesAsync();
 
-        return Results.Created($"/consultas/{consulta.Id}", new
-        {
-            consulta.Id,
-            consulta.DataHora,
-            consulta.Anamnese,
-            consulta.MedicoId,
-            consulta.PacienteId,
-            consulta.ProntuarioId
-        });
+        return Results.Created($"/consultas/{consulta.Id}", consulta);
     }
 }
