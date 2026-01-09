@@ -11,7 +11,7 @@ public class CreateConsultaEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPost("/", HandleAsync)
-            .RequireAuthorization(policy => policy.RequireRole("MEDICO"));
+            .RequireAuthorization("Medico");
 
     private static async Task<IResult> HandleAsync(ConsultaDTO consultaDto
         , ClaimsPrincipal user

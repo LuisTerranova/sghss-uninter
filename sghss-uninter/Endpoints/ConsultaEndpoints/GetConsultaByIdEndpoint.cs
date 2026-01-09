@@ -9,7 +9,7 @@ public class GetConsultaByIdEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapGet("/{id}", HandleAsync)
-            .RequireAuthorization(policy => policy.RequireRole("MEDICO", "ADMIN"));
+            .RequireAuthorization("Medico");
 
     private static async Task<IResult> HandleAsync(AppDbContext context
         , ClaimsPrincipal user
@@ -21,14 +21,11 @@ public class GetConsultaByIdEndpoint : IEndpoint
         
         if (user.IsInRole("MEDICO"))
         {
-            var medicoIdClaim = user.FindFirst("medicoid")?.Value;
-        
-            if (string.IsNullOrEmpty(medicoIdClaim))
-                return Results.Forbid();
-        
-            var medicoId = int.Parse(medicoIdClaim);
+            var medicoId = int.Parse(user.FindFirst("medicoid")?.Value);
 
-
+            if (medicoId == 0)
+                return Results.Unauthorized();
+                
             query = query.Where(c => c.MedicoId == medicoId);
         }
         

@@ -10,13 +10,14 @@ public class UpdateConsultaEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPost("/{id}", HandleAsync)
-    .RequireAuthorization(policy => policy.RequireRole("MEDICO"));
+            .RequireAuthorization("Medico");
 
     private static async Task<IResult> HandleAsync(int id,
         ClaimsPrincipal user,
         ConsultaDTO consultaDto,
         AppDbContext context)
     {
+        //WIP trocar logica para medico poder atualizar apenas propria consulta
         if (user == null || !user.IsInRole("MEDICO")) return Results.Unauthorized();
         
         var consulta = await context.Consultas.FirstOrDefaultAsync(c => c.Id == id);

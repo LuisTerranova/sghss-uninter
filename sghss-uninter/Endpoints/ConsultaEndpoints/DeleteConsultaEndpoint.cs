@@ -10,7 +10,7 @@ public class DeleteConsultaEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapDelete("/{id}", HandleAsync)
-            .RequireAuthorization(policy => policy.RequireRole("MEDICO"));
+            .RequireAuthorization("Medico");
 
     private static async Task<IResult> HandleAsync(AppDbContext context
         , ClaimsPrincipal user

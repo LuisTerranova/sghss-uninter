@@ -11,7 +11,7 @@ public class CreateMedicoEndpoint : IEndpoint
 {
 public static void Map(IEndpointRouteBuilder app)
     => app.MapPost("registro", HandleAsync)
-        .RequireAuthorization(policy => policy.RequireRole("ADMIN"))
+        .RequireAuthorization("Administrador")
         .WithName("RegistroMedicoEndpoint")
         .WithDescription("Registro de medicos");
 

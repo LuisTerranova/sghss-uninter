@@ -10,7 +10,8 @@ namespace sghss_uninter.Endpoints.ConsultaEndpoints;
 public class GetConsultasEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapGet("/", HandleAsync);
+        => app.MapGet("/", HandleAsync)
+            .RequireAuthorization("Medico&Admin");
 
     private static async Task<IResult> HandleAsync(ClaimsPrincipal user
     , AppDbContext context
@@ -19,7 +20,9 @@ public class GetConsultasEndpoint : IEndpoint
     {
         var query = context.Consultas.AsNoTracking();
         
-        if (user.IsInRole("MEDICO") && !user.IsInRole("ADMIN"))
+        //Roda apena se o usuario for medico para mostrar consultas
+        //especificas dele.
+        if (user.IsInRole("MEDICO"))
         {
             var medicoId = int.Parse(user.FindFirst("medicoid")!.Value);
             query = query.Where(c => c.MedicoId == medicoId);

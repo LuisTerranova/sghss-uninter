@@ -10,6 +10,8 @@ public class Medico
     public string Telefone { get; set; }
     public string Cpf { get; init; }
     public int Crm { get; init; }
+    public string Especialidade { get; set; }
+    [JsonIgnore]
     public string ApplicationUserId { get; init; }
     [JsonIgnore]
     public IList<Consulta> Consultas { get; set; } = new List<Consulta>();

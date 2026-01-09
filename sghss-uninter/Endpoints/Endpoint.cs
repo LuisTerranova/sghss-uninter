@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using sghss_uninter.Api;
 using sghss_uninter.Endpoints.ConsultaEndpoints;
 using sghss_uninter.Endpoints.MedicoEndpoints;
@@ -13,7 +14,10 @@ public static class Endpoint
         var endpoints = app.MapGroup("");
 
         endpoints.MapGroup("/v1/medico")
-            .MapEndpoint<CreateMedicoEndpoint>();
+            .MapEndpoint<CreateMedicoEndpoint>()
+            .MapEndpoint<DeleteMedicoEndpoint>()
+            .MapEndpoint<GetMedicoByIdEdpoint>()
+            .MapEndpoint<GetMedicosEndpoint>();
 
         endpoints.MapGroup("/v1/admin")
             .MapEndpoint<LoginEndpoint>()
@@ -22,10 +26,13 @@ public static class Endpoint
         endpoints.MapGroup("/v1/consultas")
             .MapEndpoint<CreateConsultaEndpoint>()
             .MapEndpoint<UpdateConsultaEndpoint>()
-            .MapEndpoint<DeleteConsultaEndpoint>();
+            .MapEndpoint<DeleteConsultaEndpoint>()
+            .MapEndpoint<GetConsultaByIdEndpoint>()
+            .MapEndpoint<GetConsultasEndpoint>();
         
         endpoints.MapGroup("/v1/pacientes")
-            .MapEndpoint<CreatePacienteEndpoint>();
+            .MapEndpoint<CreatePacienteEndpoint>()
+            .MapEndpoint<UpdatePacienteEndpoint>();
 
 
     }
