@@ -10,7 +10,7 @@ public class CreatePacienteEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPost("/", HandleAsync)
-            .RequireAuthorization(policy => policy.RequireRole("ADMIN"));
+            .RequireAuthorization("Medico&Admin");
 
 
     private static async Task<IResult> HandleAsync(PacienteDTO pacienteDto

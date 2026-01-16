@@ -11,36 +11,32 @@ namespace sghss_uninter.Endpoints.MedicoEndpoints;
  {
      public static void Map(IEndpointRouteBuilder app)
          => app.MapGet("/", HandleAsync)
-             .RequireAuthorization("Admin&Medico");
+             .RequireAuthorization("Medico&Admin");
 
      private static async Task<IResult> HandleAsync(AppDbContext context
          , ClaimsPrincipal user
+         ,CancellationToken ct
          , int pagenumber = Configuration.DefaultPageNumber
          , int pagesize = Configuration.DefaultPageSize)
      {
-         var query = context.Medicos.AsNoTracking()
+         var query = context.Medicos.AsNoTracking();
+         var totalCount = await query.CountAsync(ct);
+         
+         var medicos = await query
+             .OrderByDescending(m => m.Nome)
              .Skip((pagenumber - 1) * pagesize)
              .Take(pagesize)
-             .OrderBy(c => c.Nome);
-
-         if (user.IsInRole("MEDICO"))
-         {
-             var dadosMedico = await query
-                 .Select(m => new MedicoDTO 
-                 {
-                     Nome = m.Nome,
-                     Crm = m.Crm,
-                     Especialidade = m.Especialidade
-                 })
-                 .ToListAsync();
-
-             return Results.Ok(dadosMedico);
-         }
-
-         var dadosAdmin = await query
-             .Skip((pagenumber - 1) * pagesize)
-             .Take(pagesize)
-             .ToListAsync();
-         return Results.Ok(dadosAdmin);
-     }
+             .Select(m => new MedicoDTO
+             {
+                 Nome = m.Nome,
+                 Crm = m.Crm,
+                 Especialidade = m.Especialidade
+             })
+             .ToListAsync(ct);
+         
+     return Results.Ok(new PagedResponse<List<MedicoDTO>>(medicos
+             , totalCount
+             , pagenumber
+             , pagesize));
+ }
  }

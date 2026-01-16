@@ -8,6 +8,7 @@ public class Paciente
     public string Nome  { get; set; }
     public string Cpf  { get; init; }
     public DateTime DataNasc  { get; init; }
+    //WIP adicionar sexo ao paciente
     public int Idade 
     { 
         get 
@@ -23,6 +24,8 @@ public class Paciente
     }
     public string Email  { get; set; }
     public string Telefone  { get; set; }
+    [JsonIgnore]
+    public IList<Consulta> Consultas { get; set; } = new List<Consulta>();
     [JsonIgnore]
     public Prontuario Prontuario { get; set; }
 }

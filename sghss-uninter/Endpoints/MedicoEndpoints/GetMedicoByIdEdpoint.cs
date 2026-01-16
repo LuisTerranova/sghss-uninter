@@ -20,7 +20,8 @@ public class GetMedicoByIdEdpoint : IEndpoint
             .AsNoTracking()
             .Where(m => m.Id == id);
 
-        if (user.IsInRole("Medico"))
+        //WIP tratar int parse como int tryparse e utilizar sua propriedade booleana
+        if (user.IsInRole("MEDICO"))
         {
             var medicoId = int.Parse(user.FindFirst("medicoid").Value);
             
