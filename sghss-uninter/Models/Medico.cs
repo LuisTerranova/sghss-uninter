@@ -9,7 +9,7 @@ public class Medico
     public string Email { get; set; }
     public string Telefone { get; set; }
     public string Cpf { get; init; }
-    public int Crm { get; init; }
+    public string Crm { get; init; }
     public string Especialidade { get; set; }
     [JsonIgnore]
     public string ApplicationUserId { get; init; }

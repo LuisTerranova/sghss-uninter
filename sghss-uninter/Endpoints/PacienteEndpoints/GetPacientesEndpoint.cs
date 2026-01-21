@@ -7,7 +7,7 @@ using sghss_uninter.Models;
 
 namespace sghss_uninter.Endpoints.PacienteEndpoints;
 
-public class GetPacientesEdpoint : IEndpoint
+public class GetPacientesEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapGet("/", HandleAsync)
@@ -44,9 +44,9 @@ public class GetPacientesEdpoint : IEndpoint
         
         var totalCount = await query.CountAsync(ct);
 
-        return listaPacientes == null
-            ? Results.NotFound("Nenhum paciente encontrado.")
-              : Results.Ok(new PagedResponse<List<PacienteDetalhesSImplesDTO>>(listaPacientes
+        return totalCount == 0
+            ? Results.NotFound("Nenhum paciente com vinculo encontrado.")
+            : Results.Ok(new PagedResponse<List<PacienteDetalhesSImplesDTO>>(listaPacientes
                 , totalCount
                 , pageNumber
                 , pageSize));

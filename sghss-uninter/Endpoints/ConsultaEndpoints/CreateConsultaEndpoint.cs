@@ -24,14 +24,15 @@ public class CreateConsultaEndpoint : IEndpoint
 
         var medicoId = int.Parse(medicoIdClaim);
         
-        var pacienteExiste = await context.Pacientes
+        var paciente = await context.Pacientes
             .AsNoTracking()
             .FirstOrDefaultAsync(p => p.Id == consultaDto.PacienteId);
 
-        if (pacienteExiste == null)
+        if (paciente == null)
             return Results.NotFound("Paciente não encontrado.");
 
         var prontuario = await context.Prontuarios
+            .AsNoTracking()
             .FirstOrDefaultAsync(p => p.PacienteId == consultaDto.PacienteId);
 
         if (prontuario == null)
@@ -39,6 +40,7 @@ public class CreateConsultaEndpoint : IEndpoint
             prontuario = new Prontuario
             {
                 PacienteId = consultaDto.PacienteId,
+                AnamneseGeral = "Iniciado Prontuario"
             };
             await context.Prontuarios.AddAsync(prontuario);
             await context.SaveChangesAsync();

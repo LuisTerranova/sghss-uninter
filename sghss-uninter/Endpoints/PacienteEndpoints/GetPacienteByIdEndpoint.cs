@@ -33,12 +33,13 @@ public class GetPacienteByIdEndpoint : IEndpoint
                 return Results.Problem("Acesso negado, voce nao tem vinculo com este paciente");
         }
 
-        var paciente = await context.Pacientes
+        var query = context.Pacientes
             .AsNoTracking()
             .Where(p => p.Id == id)
             .Select(p => new PacienteMaisConsultasDTO
             {
-                Nome= p.Nome,
+                Id = p.Id,
+                Nome = p.Nome,
                 Cpf = p.Cpf,
                 Idade = p.Idade,
                 Consultas = p.Consultas
@@ -49,17 +50,18 @@ public class GetPacienteByIdEndpoint : IEndpoint
                     {
                         Id = c.Id,
                         DataHora = c.DataHora,
-                        Anamnese = c.Anamnese
-                    })
-                    .ToList()
-            })
-            .FirstOrDefaultAsync();
+                        Anamnese = c.Anamnese,
+                        PacienteId = c.PacienteId,
+                    }).ToList()
+            });
 
-        var totalConsultas = paciente.Consultas.Count;
+        var paciente = await query
+            .AsSplitQuery()
+            .FirstOrDefaultAsync();
         
         return paciente == null 
             ? Results.NotFound("Paciente nao encontrado") 
-            : Results.Ok(new PagedResponse<PacienteMaisConsultasDTO>(paciente, totalConsultas, pageNumber, pageSize));
+            : Results.Ok(new Response<PacienteMaisConsultasDTO>(paciente, "Paciente encontrado com sucesso"));
     }
 
 }

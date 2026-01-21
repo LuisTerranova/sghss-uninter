@@ -11,7 +11,7 @@ using sghss_uninter.Data;
 namespace sghss_uninter.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260108234745_InitialTables")]
+    [Migration("20260121233347_InitialTables")]
     partial class InitialTables
     {
         /// <inheritdoc />
@@ -266,13 +266,18 @@ namespace sghss_uninter.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Crm")
+                    b.Property<string>("Crm")
+                        .IsRequired()
                         .HasMaxLength(12)
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Especialidade")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nome")
@@ -405,7 +410,7 @@ namespace sghss_uninter.Migrations
                         .IsRequired();
 
                     b.HasOne("sghss_uninter.Models.Paciente", "Paciente")
-                        .WithMany()
+                        .WithMany("Consultas")
                         .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -441,6 +446,8 @@ namespace sghss_uninter.Migrations
 
             modelBuilder.Entity("sghss_uninter.Models.Paciente", b =>
                 {
+                    b.Navigation("Consultas");
+
                     b.Navigation("Prontuario")
                         .IsRequired();
                 });

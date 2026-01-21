@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace sghss_uninter.Models;
@@ -15,6 +16,7 @@ public class Consulta
     [JsonIgnore]
     public Medico Medico { get; set; }
     [JsonIgnore]
+    [ForeignKey("PacienteId")] //provavelmente da para retirar com o mapping atual
     public Paciente Paciente { get; set; }
     [JsonIgnore]
     public Prontuario Prontuario { get; set; }

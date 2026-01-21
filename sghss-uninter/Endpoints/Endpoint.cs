@@ -29,10 +29,11 @@ public static class Endpoint
             .MapEndpoint<DeleteConsultaEndpoint>()
             .MapEndpoint<GetConsultaByIdEndpoint>()
             .MapEndpoint<GetConsultasEndpoint>();
-        
+
         endpoints.MapGroup("/v1/pacientes")
             .MapEndpoint<CreatePacienteEndpoint>()
-            .MapEndpoint<UpdatePacienteEndpoint>();
+            .MapEndpoint<GetPacienteByIdEndpoint>()
+            .MapEndpoint<GetPacientesEndpoint>();
 
 
     }

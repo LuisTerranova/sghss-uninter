@@ -33,6 +33,6 @@ public class RegistroEndpoint : IEndpoint
             await roleManager.CreateAsync(new IdentityRole(adminRole));
         
         await userManager.AddToRoleAsync(user, adminRole);
-        return Results.Ok();
+        return Results.Ok("Administrador registrado com sucesso");
     }
 }

@@ -36,7 +36,7 @@ public class ConsultaMap : IEntityTypeConfiguration<Consulta>
 
         builder.Property(c => c.PacienteId);
         builder.HasOne(c => c.Paciente)
-            .WithMany()
+            .WithMany(p => p.Consultas)
             .HasForeignKey(c => c.PacienteId)
             .OnDelete(DeleteBehavior.Restrict);
     }

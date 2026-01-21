@@ -34,7 +34,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Administrator", policy => policy.RequireRole("ADMIN"));
+    options.AddPolicy("Administrador", policy => policy.RequireRole("ADMIN"));
     options.AddPolicy("Medico", policy => policy.RequireRole("MEDICO"));
     options.AddPolicy("Medico&Admin", policy => policy.RequireRole("MEDICO", "ADMIN"));
 });

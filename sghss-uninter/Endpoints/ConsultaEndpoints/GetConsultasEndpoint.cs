@@ -24,7 +24,9 @@ public class GetConsultasEndpoint : IEndpoint
         //especificas dele.
         if (user.IsInRole("MEDICO"))
         {
-            var medicoId = int.Parse(user.FindFirst("medicoid")!.Value);
+            if (!int.TryParse(user.FindFirst("medicoid")?.Value, out var medicoId))
+                return Results.BadRequest("Identificador do medico invalido");
+            
             query = query.Where(c => c.MedicoId == medicoId);
         }
         
@@ -45,5 +47,4 @@ public class GetConsultasEndpoint : IEndpoint
         
         return Results.Ok(new PagedResponse<List<ConsultaListaDTO>>(consultas, totalCount, page, pageSize));
     }
-
 }

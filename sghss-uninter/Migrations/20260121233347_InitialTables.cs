@@ -60,7 +60,8 @@ namespace sghss_uninter.Migrations
                     Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Telefone = table.Column<string>(type: "TEXT", maxLength: 11, nullable: false),
                     Cpf = table.Column<string>(type: "TEXT", maxLength: 11, nullable: false),
-                    Crm = table.Column<int>(type: "INTEGER", maxLength: 12, nullable: false),
+                    Crm = table.Column<string>(type: "TEXT", maxLength: 12, nullable: false),
+                    Especialidade = table.Column<string>(type: "TEXT", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
