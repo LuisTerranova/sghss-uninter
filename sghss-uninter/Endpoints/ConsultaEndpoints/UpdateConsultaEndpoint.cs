@@ -9,7 +9,7 @@ namespace sghss_uninter.Endpoints.ConsultaEndpoints;
 public class UpdateConsultaEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapPost("/{id}", HandleAsync)
+        => app.MapPut("/{id}", HandleAsync)
             .RequireAuthorization("Medico");
 
     private static async Task<IResult> HandleAsync(int id,
@@ -20,12 +20,14 @@ public class UpdateConsultaEndpoint : IEndpoint
         //WIP trocar logica para medico poder atualizar apenas propria consulta
         if (user == null || !user.IsInRole("MEDICO")) return Results.Unauthorized();
         
-        var consulta = await context.Consultas.FirstOrDefaultAsync(c => c.Id == id);
+        var consulta = await context.Consultas
+            .FirstOrDefaultAsync(c => c.Id == id);
+        
         consulta.DataHora = consultaDto.DataHora;
-
-        context.Consultas.Update(consulta);
+        consulta.Anamnese = consultaDto.Anamnese;
+        
         await context.SaveChangesAsync();
-        return Results.Ok(consulta);
+        return Results.NoContent();
     }
 
 }

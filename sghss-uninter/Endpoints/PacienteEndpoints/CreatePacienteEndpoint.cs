@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using sghss_uninter.Api;
 using sghss_uninter.Data;
 using sghss_uninter.DTOs;
@@ -29,7 +30,9 @@ public class CreatePacienteEndpoint : IEndpoint
             
         await context.Pacientes.AddAsync(novoPaciente);
         await context.SaveChangesAsync();
-        return Results.Ok(novoPaciente);
+        
+        return Results.Created($"/v1/pacientes/{novoPaciente.Id}", 
+            new { message = "Paciente registrado com sucesso"});
 
     }
 }

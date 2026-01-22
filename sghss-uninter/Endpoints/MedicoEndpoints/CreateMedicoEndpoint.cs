@@ -50,7 +50,7 @@ private static async Task<IResult> HandleAsync(UserManager<ApplicationUser> user
     context.Medicos.Add(novoMedico);
     await context.SaveChangesAsync();
 
-    return Results.Created($"/api/medicos/{novoMedico.Id}", 
+    return Results.Created($"/v1/medicos/{novoMedico.Id}", 
         new { message = "Médico e usuário registrados com sucesso.", MedicoId = novoMedico.Id });
 }
 }
