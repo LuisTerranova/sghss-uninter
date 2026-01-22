@@ -6,4 +6,5 @@ public class ConsultaListaDTO
     public DateTime DataHora { get; set; }
     public string Anamnese { get; set; }
     public string NomePaciente { get; set; }
+    public bool Status { get; set; }
 }

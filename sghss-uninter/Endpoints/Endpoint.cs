@@ -3,6 +3,7 @@ using sghss_uninter.Api;
 using sghss_uninter.Endpoints.ConsultaEndpoints;
 using sghss_uninter.Endpoints.MedicoEndpoints;
 using sghss_uninter.Endpoints.PacienteEndpoints;
+using sghss_uninter.Endpoints.ProntuarioEndpoints;
 using sghss_uninter.Endpoints.UsuarioEdpoints;
 
 namespace sghss_uninter.Endpoints;
@@ -34,6 +35,9 @@ public static class Endpoint
             .MapEndpoint<CreatePacienteEndpoint>()
             .MapEndpoint<GetPacienteByIdEndpoint>()
             .MapEndpoint<GetPacientesEndpoint>();
+
+        endpoints.MapGroup("/v1/prontuarios")
+            .MapEndpoint<GetProntuarioByIdEndpoint>();
 
 
     }

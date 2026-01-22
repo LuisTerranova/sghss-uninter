@@ -41,7 +41,8 @@ public class GetConsultasEndpoint : IEndpoint
                 Id = c.Id,
                 DataHora = c.DataHora,
                 Anamnese = c.Anamnese,
-                NomePaciente = c.Paciente.Nome
+                NomePaciente = c.Paciente.Nome,
+                Status = c.Status
             })
             .ToListAsync();
         

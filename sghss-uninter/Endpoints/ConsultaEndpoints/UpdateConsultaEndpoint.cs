@@ -25,6 +25,7 @@ public class UpdateConsultaEndpoint : IEndpoint
         
         consulta.DataHora = consultaDto.DataHora;
         consulta.Anamnese = consultaDto.Anamnese;
+        consulta.Status = consultaDto.Status;
         
         await context.SaveChangesAsync();
         return Results.NoContent();
