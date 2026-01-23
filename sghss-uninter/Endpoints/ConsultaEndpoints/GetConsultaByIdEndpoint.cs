@@ -9,7 +9,7 @@ public class GetConsultaByIdEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapGet("/{id}", HandleAsync)
-            .RequireAuthorization("Medico");
+            .RequireAuthorization("Medico&Admin");
 
     private static async Task<IResult> HandleAsync(AppDbContext context
         , ClaimsPrincipal user

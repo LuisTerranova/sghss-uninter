@@ -37,7 +37,8 @@ public static class Endpoint
             .MapEndpoint<GetPacientesEndpoint>();
 
         endpoints.MapGroup("/v1/prontuarios")
-            .MapEndpoint<GetProntuarioByIdEndpoint>();
+            .MapEndpoint<GetProntuarioByIdEndpoint>()
+            .MapEndpoint<UpdateProntuarioEndpoint>();
 
 
     }
