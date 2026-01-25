@@ -24,22 +24,14 @@ public class LoginEndpoint : IEndpoint
     {
         var user = await userManager.FindByEmailAsync(loginRequest.Email);
         if (user == null) return Results.Unauthorized();
-        
+
         var result = await signInManager.CheckPasswordSignInAsync(user, loginRequest.Password, false);
 
         if (!result.Succeeded) return Results.Unauthorized();
-        
-        var customClaims = new List<Claim>();
-        var medico = await context.Medicos
-            .FirstOrDefaultAsync(m => m.ApplicationUserId == user.Id);
-        
-        if (medico != null)
-            customClaims.Add(new Claim("medicoid", medico.Id.ToString()));
-        
-            
-        await signInManager.SignInWithClaimsAsync(user, isPersistent: false, customClaims);
+        await signInManager.SignOutAsync();
+
+        await signInManager.SignInAsync(user, isPersistent: false);
 
         return Results.Ok(new { message = "Login realizado com sucesso." });
-
     }
 }

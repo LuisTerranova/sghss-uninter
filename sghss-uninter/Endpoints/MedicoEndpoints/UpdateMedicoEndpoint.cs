@@ -15,6 +15,7 @@ public class UpdateMedicoEndpoint : IEndpoint
     ,AtualizarMedicoDTO medicoDto
     , int id)
     {
+        //WIP buscas com chave primaria usar findasync(id)
         var medico = await context.Medicos
             .FirstOrDefaultAsync(m => m.Id == id);
         

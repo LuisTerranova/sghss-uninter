@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sghss_uninter.Api;
 using sghss_uninter.Data;
+using sghss_uninter.DTOs;
 
 namespace sghss_uninter.Endpoints.MedicoEndpoints;
 
@@ -20,22 +21,39 @@ public class GetMedicoByIdEdpoint : IEndpoint
             .AsNoTracking()
             .Where(m => m.Id == id);
 
-        //WIP tratar int parse como int tryparse e utilizar sua propriedade booleana
+        //WIP tratar se caso o medico for ele mesmo retornar todas as infos, ou um endpoint
+        //diferente para nao deixar este cluttered.
         if (user.IsInRole("MEDICO"))
         {
-            var medicoId = int.Parse(user.FindFirst("medicoid").Value);
+            var medico = await query.Select(m => new MedicoSimplesDTO
+            {
+                Nome = m.Nome,
+                Crm = m.Crm,
+                Especialidade = m.Especialidade
+            })
+            .FirstOrDefaultAsync();
             
-            if (medicoId == 0)
-                return Results.Forbid();
-            
-            query = query.Where(m => m.Id == medicoId);
+            return medico == null 
+                ? Results.NotFound() 
+                : Results.Ok(medico);
         }
 
-        var medico = query.FirstOrDefaultAsync();
+        var medicoCompleto = await query
+            .Select(m => new MedicoDetalhesDTO
+            {
+                Id = m.Id,
+                Nome = m.Nome,
+                Cpf = m.Cpf,
+                Crm = m.Crm,
+                Especialidade = m.Especialidade,
+                Email = m.Email,
+                Telefone = m.Telefone
+            } )
+            .FirstOrDefaultAsync();
         
-        return medico == null 
+        return medicoCompleto == null 
             ? Results.NotFound() 
-            : Results.Ok(medico);
+            : Results.Ok(medicoCompleto);
     }
 
 }

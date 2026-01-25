@@ -26,7 +26,7 @@ namespace sghss_uninter.Endpoints.MedicoEndpoints;
              .OrderByDescending(m => m.Nome)
              .Skip((pagenumber - 1) * pagesize)
              .Take(pagesize)
-             .Select(m => new MedicoDTO
+             .Select(m => new MedicoSimplesDTO
              {
                  Nome = m.Nome,
                  Crm = m.Crm,
@@ -34,7 +34,7 @@ namespace sghss_uninter.Endpoints.MedicoEndpoints;
              })
              .ToListAsync(ct);
          
-     return Results.Ok(new PagedResponse<List<MedicoDTO>>(medicos
+     return Results.Ok(new PagedResponse<List<MedicoSimplesDTO>>(medicos
              , totalCount
              , pagenumber
              , pagesize));

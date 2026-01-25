@@ -18,11 +18,13 @@ public static class Endpoint
             .MapEndpoint<CreateMedicoEndpoint>()
             .MapEndpoint<DeleteMedicoEndpoint>()
             .MapEndpoint<GetMedicoByIdEdpoint>()
-            .MapEndpoint<GetMedicosEndpoint>();
+            .MapEndpoint<GetMedicosEndpoint>()
+            .MapEndpoint<UpdateMedicoEndpoint>();
 
         endpoints.MapGroup("/v1/admin")
             .MapEndpoint<LoginEndpoint>()
-            .MapEndpoint<RegistroEndpoint>();
+            .MapEndpoint<RegistroEndpoint>()
+            .MapEndpoint<LogoutEndpoint>();
 
         endpoints.MapGroup("/v1/consultas")
             .MapEndpoint<CreateConsultaEndpoint>()

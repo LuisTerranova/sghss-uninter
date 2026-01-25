@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using sghss_uninter.Api;
 using sghss_uninter.Data;
@@ -26,16 +27,16 @@ private static async Task<IResult> HandleAsync(UserManager<ApplicationUser> user
 
     if (!result.Succeeded)
         return Results.BadRequest("Erro ao criar medico");
-    
+
     const string medicoRole = "MEDICO";
-    
+
     if (!await roleManager.RoleExistsAsync(medicoRole))
     {
         await roleManager.CreateAsync(new IdentityRole(medicoRole));
     }
 
     await userManager.AddToRoleAsync(user, medicoRole);
-    
+
     var novoMedico = new Medico
     {
         Nome = registro.Nome,
@@ -46,9 +47,12 @@ private static async Task<IResult> HandleAsync(UserManager<ApplicationUser> user
         ApplicationUserId = user.Id,
         Especialidade = registro.Especialidade,
     };
-    
+
     context.Medicos.Add(novoMedico);
     await context.SaveChangesAsync();
+
+    await userManager.AddClaimAsync(user, new Claim("medicoid", novoMedico.Id.ToString()));
+    await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, medicoRole));
 
     return Results.Created($"/v1/medicos/{novoMedico.Id}", 
         new { message = "Médico e usuário registrados com sucesso.", MedicoId = novoMedico.Id });

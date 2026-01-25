@@ -11,7 +11,7 @@ using sghss_uninter.Data;
 namespace sghss_uninter.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260121233347_InitialTables")]
+    [Migration("20260125210117_InitialTables")]
     partial class InitialTables
     {
         /// <inheritdoc />

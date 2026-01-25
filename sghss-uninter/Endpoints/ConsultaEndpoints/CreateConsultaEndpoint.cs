@@ -17,12 +17,11 @@ public class CreateConsultaEndpoint : IEndpoint
         , ClaimsPrincipal user
         , AppDbContext context)
     {
+        
         var medicoIdClaim = user.FindFirst("medicoid")?.Value;
         
-        if (string.IsNullOrEmpty(medicoIdClaim))
-            return Results.Forbid(); 
-
-        var medicoId = int.Parse(medicoIdClaim);
+        if (!int.TryParse(medicoIdClaim, out int medicoId) || medicoId <= 0)
+            return Results.Forbid();
         
         var paciente = await context.Pacientes
             .AsNoTracking()
